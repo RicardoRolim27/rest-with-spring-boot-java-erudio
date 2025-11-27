@@ -1,6 +1,9 @@
 package br.com.ricardorolim.services;
 
+import br.com.ricardorolim.exception.ResourceNotFoundException;
 import br.com.ricardorolim.model.Person;
+import br.com.ricardorolim.repository.PersonRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,62 +16,52 @@ public class PersonService {
 
     private AtomicLong counter = new AtomicLong();
 
+    @Autowired
+    PersonRepository repository;
+
     private Logger logger = Logger.getLogger(PersonService.class.getName());
 
-    public Person findById(String id){
+    public Person findById(Long id){
         logger.info("Find one person");
-
-        Person person = new Person();
-
-        person.setId(counter.incrementAndGet());
-        person.setName("Malaquias");
-        person.setLastName("Seixas");
-        person.setGender("masculino");
-        person.setAddress("Londrina");
-
-        return person;
-
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada!"));
     }
 
     public List<Person> findAll() {
         List<Person> persons = new ArrayList<Person>();
-
-        for (int i = 0; i < 8; i++){
-            Person person = mockPerson(i);
-
-            persons.add(person);
-        }
-
-        return persons;
+        return repository.findAll();
     }
 
     public Person create(Person person){
-        logger.info("Creating a person");
 
-        return person;
+        Person createdPerson = new Person();
+
+        createdPerson.setName(person.getName());
+        createdPerson.setLastName(person.getLastName());
+        createdPerson.setGender(person.getGender());
+        createdPerson.setAddress(person.getAddress());
+
+        return repository.save(createdPerson);
     }
 
     public Person update(Person person){
-        logger.info("update a person");
+        Person updatedPerson = repository.findById(person.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada!"));
 
-        return person;
+        updatedPerson.setName(person.getName());
+        updatedPerson.setLastName(person.getLastName());
+        updatedPerson.setGender(person.getGender());
+        updatedPerson.setAddress(person.getAddress());
+
+        return repository.save(updatedPerson);
     }
 
-    public void delete(String id){
-        logger.info("delete a person");
-
+    public void delete(Long id){
+        Person deletePerson = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada!"));
+        repository.delete(deletePerson);
     }
 
-    private Person mockPerson(int i) {
-        Person person = new Person();
 
-        person.setId(counter.incrementAndGet());
-        person.setName("Nome " + i);
-        person.setLastName("Sobrenome " + i);
-        person.setGender("masculino");
-        person.setAddress("em algum lugar no Brasil");
-
-        return person;
-    }
 }
 

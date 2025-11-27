@@ -1,7 +1,5 @@
 package br.com.ricardorolim.controllers;
 
-
-import br.com.ricardorolim.exception.UnsupportedMathOperationException;
 import br.com.ricardorolim.utils.Calculator;
 import br.com.ricardorolim.utils.GeneralConvertion;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,7 @@ public class MathController {
 
 
         if(!isNumeric(numberOne) || !isNumeric(numberTwo))
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new RuntimeException("Please, set a numeric value");
 
         double convertedNumberOne = 0d;
 
@@ -42,7 +40,7 @@ public class MathController {
     ) throws Exception {
 
         if(!isNumeric(numberOne) || !isNumeric(numberTwo))
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new RuntimeException("Please, set a numeric value");
 
         double convertedNumberOne = 0d;
 
@@ -63,7 +61,7 @@ public class MathController {
     ) throws Exception {
 
         if(!isNumeric(numberOne) || !isNumeric(numberTwo))
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new RuntimeException("Please, set a numeric value");
 
         double convertedNumberOne = 0d;
 
@@ -84,7 +82,7 @@ public class MathController {
     ) throws Exception {
 
         if(!isNumeric(number))
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new RuntimeException("Please, set a numeric value");
 
         double convertedNumber = 0d;
 
@@ -96,7 +94,7 @@ public class MathController {
 
     private boolean isNumeric(String strNumber) {
         if(strNumber == null || strNumber.isEmpty()) {
-            throw new UnsupportedMathOperationException("Please, set a numeric value");
+            throw new RuntimeException("Please, set a numeric value");
         }
 
         try {

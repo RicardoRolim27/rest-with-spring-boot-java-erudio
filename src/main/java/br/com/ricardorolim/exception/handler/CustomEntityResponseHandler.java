@@ -1,7 +1,7 @@
 package br.com.ricardorolim.exception.handler;
 
 import br.com.ricardorolim.exception.ExceptionResponse;
-import br.com.ricardorolim.exception.UnsupportedMathOperationException;
+import br.com.ricardorolim.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,7 +28,7 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
     }
 
 
-    @ExceptionHandler(UnsupportedMathOperationException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     public final ResponseEntity<ExceptionResponse> handleBadRequestExceptions(Exception ex, WebRequest request) {
         ExceptionResponse response = new ExceptionResponse(
                 new Date(),
@@ -36,6 +36,6 @@ public class CustomEntityResponseHandler extends ResponseEntityExceptionHandler 
                 request.getDescription(false)
         );
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
