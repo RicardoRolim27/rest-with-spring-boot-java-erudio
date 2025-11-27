@@ -3,6 +3,7 @@ package br.com.ricardorolim.controllers;
 import br.com.ricardorolim.model.Person;
 import br.com.ricardorolim.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -41,9 +42,11 @@ public class PersonController {
 
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 
         personService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
